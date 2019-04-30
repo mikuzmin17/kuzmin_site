@@ -1,0 +1,18 @@
+
+{% extends 'blog/base.html' %}
+{% block opisanie %}
+            <ul class="nav">
+                <li><a href="{% url 'list' %}" class="">Список постов</a></li>
+            </ul>
+{% endblock opisanie %}
+
+{% block content %}
+    {% for post in object_list %}
+        <p>{{ post.datetime }}</p>
+        <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
+        <p>{{ post.content }}</p>
+    {% empty %}
+    <p>Пока никто ничего не написал</p>
+    {% endfor %}
+
+{% endblock %}

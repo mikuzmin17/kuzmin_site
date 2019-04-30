@@ -1,0 +1,23 @@
+{% load staticfiles %}
+<html>
+<head>
+    <title>{% block title %}{% endblock %}</title>
+</head>
+<body>
+    <img src='{% static "images/sitelogo.jpeg" %}' alt="Logo" />
+
+
+            <div class="brand">Kuzmin Blog</div>
+            <div class="container">
+                {% block opisanie %}
+                {% endblock opisanie %}
+            </div> <!-- container -->
+
+
+
+<div class="container">
+     {% block content %}Empty page{% endblock content %}
+</div> <!-- container -->
+
+</body>
+</html>

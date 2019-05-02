@@ -10,10 +10,13 @@ from blog import forms
 class Privet(TemplateView):
     model = Post
     template_name = "blog/home.html"
-    def home(self):
-        list_home = Post.objects.order_by('-pub_date')[:10]
-        output = ','.join([x.title for x in list_home])
-        return HttpResponse(output)
+
+    def get_context_data(self, **kwargs):
+        context = super(Privet, self).get_context_data(**kwargs)
+        queryset = Post.objects.order_by('-pub_date')[:10]
+        context['list_home'] = ','.join([x.title for x in queryset])
+        return context
+
 
 
 class PostsListView(ListView):
@@ -22,8 +25,12 @@ class PostsListView(ListView):
 
 
 class PostDetailView(DetailView):
-    model = Post
+    model = Comment
+    template_name = "blog/post_detail.html"
 #    def comment_form(self, Post, ):
+
+# def post(self, request, *args, **kwargs):     # Возможность внутри класса различать get и post запрос
+#     ...
 
 
 # class MyView(FormView):

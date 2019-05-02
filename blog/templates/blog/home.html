@@ -1,20 +1,19 @@
 {% extends 'blog/base.html' %}
 {% block opisanie %}
 <div>Это блог о том как я учился в DL ACADEMY и чему научился...</div>
+{% if user.is_authenticated %}Hello, {{ user.username }}.{% endif %}
 {% endblock opisanie %}
 
 
 {% block content %}
 <ul class="nav">
-                <li><a href="{% url 'list' %}" class="">Список постов</a></li>
+                <li> Список постов</li>
             </ul>
-        {% for post in list_home %}
+        {{ list_home }}
         <p>{{ post.datetime }}</p>
         <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
         <p>{{ post.content }}</p>
-         {% empty %}
-        <p>Пока никто ничего не написал</p>
-         {% endfor %}
+
 
 
 {% endblock content %}

@@ -1,0 +1,32 @@
+{% extends 'blog/base.html' %}
+
+    {% block opisanie %}
+
+        <h1> Все статьи за  {{ year|date:"Y" }}</h1>
+
+    {% endblock opisanie %}
+
+{% block content %}
+<ul>
+    {% for date in date_list  %}
+        <a href="{{ date|date:'m' }}"> <b>{{ date|date:"F" }}</b></a>
+        {% for obj in object_list %}
+            {% if obj.datetime|date:"F" ==  date|date:"F" %}
+                <p>
+                    <a href="{{ obj.get_absolute_url }}"><li>{{obj.title}}</a> - {{ obj.datetime|date:"F j, Y" }} автор {{ obj.user_post}}
+                </p>
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+ </ul>
+<p>
+    {% if previous_year %}
+        Предыдущий год : <a href="http://127.0.0.1:8000/archive/{{ previous_year|date:'Y' }}"> <b>{{ previous_year|date:"Y" }}</b></a>
+    {% endif %}
+    {% if next_year %}
+        Следующий год : <a href="http://127.0.0.1:8000/archive/{{ next_year|date:'Y' }}"> <b>{{ next_year|date:"Y" }}</b></a>
+    {% endif %}
+</p>
+{% endblock content %}
+
+

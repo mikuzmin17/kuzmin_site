@@ -1,19 +1,26 @@
 {% extends 'blog/base.html' %}
+
 {% block opisanie %}
-<div>Это блог о том как я учился в DL ACADEMY и чему научился...</div>
-{% if user.is_authenticated %}Hello, {{ user.username }}.{% endif %}
+<div><h1>Это блог о том как я учился в DL ACADEMY и чему научился...</h1></div>
+<br>
+{% if user.is_authenticated %} <h2>Мы рады видеть Вас, <b>{{ user.username }}</b> на нашей площадке.</h2>
+{% else %}    <p>Добро пожаловать. Пожалуйста авторизуйтесь или зарегистрируйтесь.</p> {% endif %}
+<hr>
 {% endblock opisanie %}
 
-
 {% block content %}
-<ul class="nav">
-                <li> Список постов</li>
-            </ul>
-        {{ list_home }}
-        <p>{{ post.datetime }}</p>
-        <h2><a href="{{ post.get_absolute_url }}">{{ post.title }}</a></h2>
-        <p>{{ post.content }}</p>
+    <ul class="nav">
+        <p><h3>Список самых свежих постов</h3></p>
+    </ul>
 
+    {% for list in list_home %}
+         <h3><a href="{{ list.get_absolute_url }}"><li>{{list.title}}</a> -- {{ list.datetime }}</li></h3>
+    {% endfor %}
+<br>
+    <h3><li><a href="{% url 'blog:list' %}">Краткий обзор статей </a></li></h3>
+<br>
 
+    <h3><li><a href="{% url 'blog:Post_year_archive'  obj.datetime|date:'Y'  %}">
+        Архив всех статей за {{  obj.datetime|date:'Y' }} год </a></li></h3>
 
 {% endblock content %}

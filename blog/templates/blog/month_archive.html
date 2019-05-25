@@ -1,0 +1,35 @@
+{% extends 'blog/base.html' %}
+
+    {% block opisanie %}
+        <h1> Все статьи за  {{ month|date:"F" }}</h1>
+    {% endblock opisanie %}
+
+{% block content %}
+<ul>
+    {% for date in date_list  %}
+        <a href="{{ date|date:'j' }}"> <b>{{ date|date:"F j" }}</b></a>
+
+        {% for obj in object_list %}
+
+
+                {% if obj.datetime|date:"F j" ==  date|date:"F j" %}
+
+                    <p>
+                        <li><a href="{{ obj.get_absolute_url }}">{{obj.title}}</a> -  автор {{ obj.user_post}}
+                    </p>
+
+                {% endif %}
+        {% endfor %}
+    {% endfor %}
+</ul>
+
+<p>
+    {% if previous_month %}
+        Предыдущий месяц : <a href="http://127.0.0.1:8000/archive/{{ previous_month|date:'Y' }}/{{ previous_month|date:'m' }}"> <b>{{ previous_month|date:"F Y" }}</b></a>
+    {% endif %}
+    {% if next_month %}
+        Следующий месяц : <a href="http://127.0.0.1:8000/archive/{{ next_month|date:'Y' }}/{{ next_month|date:'m' }}"> <b>{{ next_month|date:"F Y" }}</b></a>
+    {% endif %}
+</p>
+
+{% endblock content %}

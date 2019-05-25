@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+ <html>
+ <head lang="en">
+   <meta charset="UTF-8">
+   <title>Пример "асинхронного" запроса</title>
+   <script src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+   <script>
+     function doIt() {
+       $.ajax({
+         type: "POST",
+         url: "/",
+         data: {
+           csrfmiddlewaretoken: document.getElementsByName('csrfmiddlewaretoken')[0].value,
+           count: $("#input_count").val()
+         },
+         success: function(data) {
+           alert("Процесс запущен!");
+         },
+         error: function(xhr, textStatus, errorThrown) {
+           alert("Error: "+errorThrown+xhr.status+xhr.responseText);
+         }
+       });
+     }
+   </script>
+ </head>
+ <body>
+   {% csrf_token %}
+   <input id="input_count" type="number" value="1" min="1" max="10000"></p>
+   <input id="button_do_it" type="button" value="Отправить" onclick="doIt()">
+ </body>
+ </html>

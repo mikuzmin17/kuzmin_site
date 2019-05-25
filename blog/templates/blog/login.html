@@ -1,0 +1,28 @@
+{% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6 col-offset-sm-4">
+                <div class="container">
+                    <h3 class="text-center">
+                        Добро пожаловать! авторизуйтесь пожалуйста
+                    </h3>
+                </div>
+                <hr>
+                <form action="" method="POST">
+                    {{ form.error }}
+                    {% csrf_token %}
+                    {{ form|crispy }}
+                    <input type="submit" value="Войти">
+                </form>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+{% endblock content %}

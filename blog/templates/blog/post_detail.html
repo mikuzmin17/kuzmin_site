@@ -1,18 +1,124 @@
 {% extends 'blog/base.html' %}
+{% load crispy_forms_tags %}
+
+{% block title %}
+    {{ object.title }}
+{% endblock title %}
+
+{% block opisanie %}
+    <h1 class="text-centr">{{ object.title }}</h1>
+    <p><b>{{ post.datetime }}</b></p>
+{% endblock opisanie %}
+
 {% block content %}
+    <p>{{ post.content|escape|linebreaks|truncatewords:30  }}</p>
 
-    <p>{{ post.datetime }}</p>
-    <h2>{{ post.title }}</h2>
-    <p>{{ post.content }}</p>
+    <!-- Comment Form -->
+    {% if user.is_authenticated %}
+        <p class="add_to_userroom">
+            {% if post in user_now.faivorite_post.all %}<button class="btn btn-default disabled">Добавленно в избранное</button>
+            {% else %}<a href="#"  class="post_now"> <button class="btn btn-danger">Добавить в избранное</button></a>
+            {% endif %}
+        </p>
+        <h5 class="border-bottom border-gray pb-2 mb-0">Хотите оставить комментарий?</h5>
+        {% if new_comment %}
+            <p>Спасибо за Ваш комментарий</p>
+        {% else %}
+        <form action="." method="POST" novalidate>
+            <input type="hidden" id="content" data-id= '{{ content.id }}'>
+                {% csrf_token %}
+                {{ comment_form|crispy }}
+            <input  type="submit" value="Отправить" id="add_commit">
+        </form>
+        {% endif %}
+    {% endif %}
 
-    {% if error_message %}<p><strong>{{ error_message }}</strong></p>{% endif %}
 
-<form action="{% url 'blog:simple_post' Post.pk %}" method="post">
-{% csrf_token %}
-{% for choice in question.choice_set.all %}
-    <input type="radio" name="choice" id="choice{{ forloop.counter }}" value="{{ choice.id }}" />
-    <label for="choice{{ forloop.counter }}">{{ choice.choice_text }}</label><br />
-{% endfor %}
-<input type="submit" value="Vote" />
-</form>
+
+    {% comment %}
+
+            <nav class="blog-pagination">
+                <a class="btn btn-outline-primary" href="{% url 'post_delete' post.pk %}">Delete</a>
+                <a class="btn btn-outline-secondary" href="{% url 'post_update' post.pk %}" >Edit</a>
+            </nav>
+    {% endcomment %}
+    {% if comment_tree %}
+        <div class="my-3 p-3 bg-white rounded shadow-sm">
+            <h6 class="border-bottom border-gray pb-2 mb-0">Коментарии</h6>
+            {% for comment in comment_tree %}
+            <div class="media text-muted pt-3">
+                <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
+                    <strong class="d-block text-gray-dark">{{ comment.message|truncatewords:3 }} -
+                        {{ comment.timestamp }}  комментарий от<b>{{ comment.user_comment }}</b></strong>
+                        {{ comment.message }}
+                </p>
+            </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+ {% block jquery %}
+    <script>
+        $(document).ready(function(){
+            function getCookie(name) {
+                var cookieValue = null;
+                if (document.cookie && document.cookie !== '') {
+                    var cookies = document.cookie.split(';');
+                    for (var i = 0; i < cookies.length; i++) {
+                        var cookie = cookies[i].trim();
+                        // Does this cookie string begin with the name we want?
+                        if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                            break;
+                        }
+                    }
+                }
+                return cookieValue;
+            }
+            var csrftoken = getCookie('csrftoken');
+            $("#add_commit").on('click', function(e){
+            e.preventDefault()
+                <!-- var content_id = $("#content").attr('data-id') -->
+                var comment = $('#id_form_for_you_comment').val()
+                var entry_id = $('.object').attr('pk')
+                console.log(entry_id)
+                data = {
+                content_id: entry_id, <!-- content_id -->
+                comment: comment,
+                csrfmiddlewaretoken: csrftoken
+                }
+                $.ajax({
+                    type: "POST",
+                    url: "{% url 'blog:add_comment' %}",
+                    dataType: 'json',
+                    data: data,
+                    success: function(data){
+                        console.log(data)
+                    }
+
+                })
+
+            })
+
+        })
+
+    </script>
+<script>
+    $(document).ready(function(){
+        $('.post_now').on('click', function(e){
+            e.preventDefault()
+            console.log($(this).attr('data-slug'))
+        })
+    }    )
+</script>
+
+{% endblock jquery %}
+
 {% endblock content %}
+
+{{ comment_all  }}
+<br>
+{{  avtor }}
+<br>
+{{  object }}
+{{ comment.timestamp|timesince }}назад

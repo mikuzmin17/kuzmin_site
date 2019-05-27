@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from .models import Comment, UserAccount
 from django.contrib.auth import get_user_model
 
 
@@ -12,25 +11,10 @@ User = get_user_model()
 class CommentForm(forms.Form):
     form_for_you_comment = forms.CharField(widget=forms.Textarea)
 
-# class CommentForm(forms.ModelForm):
-#     class Meta:
-#
-#         model = Comment
-#         fields = ("message", )
+    def __init__(self, *args, **kwargs):
+        super(CommentForm, self).__init__(*args, **kwargs)
+        self.fields['form_for_you_comment'].label = 'Место для Ваших комментариев'
 
-
-# class RegistrationForm(forms.Form):
-#     #   form_for_you_registration = forms.CharField()
-#     class Meta:
-#
-#
-#         model = UserAccount
-#         fields = (
-#             'first_name',
-#             'last_name',
-#             'email',
-#             'password',
-#         )
 class LoginForm(forms.Form):
 
     username = forms.CharField()

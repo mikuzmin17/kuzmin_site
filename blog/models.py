@@ -2,7 +2,6 @@
 
 from django.db import models
 from django.contrib.auth.models import User
-from django.shortcuts import render
 from django.conf import settings
 from django.urls import reverse
 
@@ -18,8 +17,9 @@ class Post(models.Model):
     def get_absolute_url(self):
         return f"/post/{self.pk}/"
 
-    # class Meta:
-    #     ordering = ('-datetime')
+    def __str__(self):
+        return self.title
+
 
 class Comment(models.Model):
     user_comment = models.ForeignKey(User, on_delete=models.CASCADE)
@@ -30,12 +30,9 @@ class Comment(models.Model):
     timestamp = models.DateTimeField(auto_now_add=True)
     moder = models.BooleanField("Модерация", default=False)
 
-
     class Meta:
         ordering = ("-timestamp",)
 
-    # def __str__(self):
-    #     return f"комментарий от {User} к записи {self.post or self.parent}"
 
 class UserAccount(models.Model):
 

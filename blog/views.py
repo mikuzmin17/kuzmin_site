@@ -10,7 +10,6 @@ from blog.models import Post, Comment, UserAccount
 from blog.forms import CommentForm, RegistrationForm, LoginForm
 from django.views.generic.edit import CreateView, UpdateView, DeleteView
 from django.urls import reverse_lazy
-from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.mixins import PermissionRequiredMixin
 
 
@@ -51,61 +50,6 @@ class PostDetailView(DetailView):
         context['new_comment'] = None
         context['object'] = self.get_object()
         return context
-
-
-    # def post(self, request, *args, **kwargs):
-    #     # Если данный запрос типа POST, тогда
-    #     form = CommentForm(request.POST or None)
-    #     # post = request.POST['object']
-    #     # Создаем экземпляр формы и заполняем данными из запроса (связывание, binding):
-    #     if form.is_valid():     # Проверка валидности данных формы:
-    #
-    #         new_comment = form.save(commit=False)
-    #         #   получаем объект формы с введенными данными, подготавливаем их, но пока не сохраняем их в базе
-    #         new_comment.message = form.cleaned_data['message']  # Обработка данных из form.cleaned_data
-    #         #   Очищенные данные проверены на вредоносность и преобразованы в типы, совместимые с Python.
-    #         # (здесь мы просто присваиваем их полю message)
-    #         post_id = 'post.id' in request.POST # form.cleaned_data['post']
-    #         new_comment.post = Post.objects.get(id=post_id)
-    #
-    #         # new_comment.post = form.cleaned_data['post']
-    #         # new_comment.user_comment = form.cleaned_data['user_comment']
-    #         new_comment.user_comment = User.objects.get(username=self.request.user.username )
-    #
-    #         new_comment.save()  # получаем объект формы с введенными данными и установленными связями, сохраняемся в базе
-    #
-    #         Comment.objects.create(user_comment=User.objects.get(username=new_comment.username),
-    #                                post=new_comment.post,
-    #                                message=new_comment.message,
-    #                                )    # user_comment = UserAccount.objects.get(username=new_comment.user_comment.username),
-    #         #                            post = new_comment.post,
-    #         #                            message = new_comment.message
-    #         #                            )
-    #         # Переход по адресу
-    #         return HttpResponseRedirect(f"/post/{new_comment.post.pk}/")
-    #     context1 = {
-    #                'form': form
-    #               }
-    #
-    #     return render(self.request, self.template_name, context1)
-
-
-#
-# class CreateCommentView(View):
-#     template_name = "blog/post_detail.html"
-#
-#     def post(self, request, *args, **kwargs):
-#         content_id = self.request.POST.get('content_id')
-#         comment = self.request.POST.get('comment')
-#         entry = Post.objects.get(id=content_id)
-#
-#         new_comment = Comment.create(user_comment=request.user, post=entry, message = comment)
-#
-#         comment = [{'user_comment': new_comment.user_comment.username, 'post': new_comment.post,
-#                     'message': new_comment.message, 'timestamp': new_comment.timestamp}]
-#         new_comment.save()
-#         return JsonResponse(comment, safe=False)
-
 
 
 class Post_YearArchiveView(YearArchiveView):
@@ -209,5 +153,6 @@ class PostUpdate(UpdateView):
     fields = ['user_post','datetime','moder']
 
 class PostDelete(DeleteView):
+    permission_required = 'can_delete'
     model = Post
     success_url = reverse_lazy('home')

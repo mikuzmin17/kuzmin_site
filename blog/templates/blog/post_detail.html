@@ -11,36 +11,59 @@
 {% endblock opisanie %}
 
 {% block content %}
+
     <p>{{ post.content|escape|linebreaks }}</p>
 
-    <!-- Comment Form -->
-    {% if user.is_authenticated %}
-        <h5 class="border-bottom border-gray pb-2 mb-0">Хотите оставить комментарий?</h5>
-        {% if new_comment %}
-            <p>Спасибо за Ваш комментарий</p>
-        {% else %}
-        <form action="." method="POST" novalidate>
-            <input type="hidden" id="content" data-id= '{{ content.id }}'>
-                {% csrf_token %}
-                {{ comment_form|crispy }}
-            <input  type="submit" value="Отправить" id="add_commit">
-        </form>
-        {% endif %}
+    {% if not user.is_authenticated %}
+        <h5 class="border-bottom border-gray pb-2 mb-0">Хотите оставить комментарий? Тогда войдите или зарегистрируйтесь</h5>
+
     {% endif %}
 
     {% if comment_tree %}
         <div class="my-3 p-3 bg-white rounded shadow-sm">
             <h6 class="border-bottom border-gray pb-2 mb-0">Коментарии</h6>
-            {% for comment in comment_tree %}
+            {% for comment in comment_tree.all reversed %}
             <div class="media text-muted pt-3">
                 <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
                     <strong class="d-block text-gray-dark">{{ comment.message|truncatewords:3 }} -
-                        {{ comment.timestamp }}  комментарий от<b>{{ comment.user_comment }}</b></strong>
+                        {{ comment.timestamp }}  комментарий от - <b>{{ comment.user_comment }}</b></strong>
                         {{ comment.message }}
+                    {% if not forloop.last %}
+                        <hr>
+                    {% endif %}
                 </p>
             </div>
+            {% empty %}
+                <p> Be the first to comment on this post. </p>
             {% endfor %}
         </div>
     {% endif %}
 
+        <!-- Comment Form -->
+    {% if user.is_authenticated %}
+        {% if new_comment %}
+            <p>Спасибо за Ваш комментарий</p>
+        {% else %}
+        <form action="" method="POST" >    <!--  blog:add_comment -->
+            <!-- <input type="hidden" id="post" name="post" value="{{ post.id }}"> -->
+            <!-- <input type="hidden" id="content" name="content.id" data-id= '{{ content.id }}'> -->  <!-- Что с этим делать!!! -->
+            {% comment %}
+            Если вы хотите отправлять свои данные в виде GET-запроса,
+            то в таком случае приемом проверки того факта,
+            что данный запрос первый (или последующий),
+            является получение значения какого-либо поля формы (например,
+            если значение скрытого поля формы пустое, то данный вызов является первым).
+            {% endcomment %}
+                {% csrf_token %}
+
+                {{ comment_form|crispy }}
+            <input  type="submit" value="Отправить" id="add_commit">           <!-- href="#"  куда должна отправить кнопка -->
+        </form>
+        {% endif %}
+    {% endif %}
+
+
 {% endblock content %}
+<p>{{ object }}</p>
+<p>{{ post.id  }}</p>
+<p>{{ user  }}</p>

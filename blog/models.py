@@ -7,12 +7,13 @@ from django.urls import reverse
 
 
 class Post(models.Model):
-    user_post = models.ForeignKey(User,  on_delete=models.CASCADE)
-    title = models.CharField('Заголовок', max_length=255, default='')
+    user_post = models.ForeignKey(User,  on_delete=models.CASCADE, verbose_name=('Автор статьи'))
+    title = models.TextField('Заголовок', max_length=255, default='')
     datetime = models.DateTimeField('Дата публикации') # время каждого сохранения, изменения
     content = models.TextField('Содержание', default='')
     pub_date = models.DateField(auto_now_add=True) #время первой публикации
     moder = models.BooleanField("Модерация", default=False)
+
 
     def get_absolute_url(self):
         return f"/post/{self.pk}/"
@@ -24,7 +25,7 @@ class Post(models.Model):
 class Comment(models.Model):
     user_comment = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name=('коментируемая статья'))
-    parent = models.ForeignKey('self', default=0, blank=True, null=True,  on_delete=models.DO_NOTHING)  #related_name='ответ на',
+    parent = models.ForeignKey('self', default=0, blank=True, on_delete=models.DO_NOTHING)  #related_name='ответ на',
 
     message = models.TextField(max_length=1500, default='')
     timestamp = models.DateTimeField(auto_now_add=True)
@@ -41,6 +42,9 @@ class UserAccount(models.Model):
     last_name = models.CharField(max_length=200, default=None, blank=True, null=True)
     email = models.EmailField(default=None, blank=True, null=True)
     faivorite_post = models.ManyToManyField(Post)
+
+    class Meta:
+        permissions = (('can_delete', 'can_create'),)
 
     def __str__(self):
         return self.user.username

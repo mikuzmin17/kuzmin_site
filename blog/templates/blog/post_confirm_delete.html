@@ -1,0 +1,14 @@
+{% extends 'blog/base.html' %}
+
+{% block content %}
+
+<h1>Удаление Статьи</h1>
+
+<p>Вы удаляете статью: {{ author }}. Подтвердите свои намерения!</p>
+
+<form action="" method="POST">
+  {% csrf_token %}
+  <input type="submit" action="" value="ДА, это была лишняя статья." />
+</form>
+
+{% endblock %}

@@ -2,18 +2,20 @@
 
 from django import forms
 from django.contrib.auth import get_user_model
-
+from blog.models import Comment
 
 User = get_user_model()
 
 
 
-class CommentForm(forms.Form):
-    form_for_you_comment = forms.CharField(widget=forms.Textarea)
-
+class CommentForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(CommentForm, self).__init__(*args, **kwargs)
-        self.fields['form_for_you_comment'].label = 'Место для Ваших комментариев'
+        self.fields['message'].label = 'Место для Ваших комментариев'
+
+    class Meta:
+        model = Comment
+        fields = ('message', )
 
 class LoginForm(forms.Form):
 
@@ -50,7 +52,6 @@ class RegistrationForm(forms.ModelForm):
         super(RegistrationForm, self).__init__(*args, **kwargs)
         self.fields['username'].label = 'Логин'
         self.fields['password_check'].label = 'Повторите Ваш пароль'
-
         self.fields['email'].help_text = 'Обязательное поле'
 
     def clean(self):

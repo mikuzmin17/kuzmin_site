@@ -1,6 +1,6 @@
 asn1crypto==0.24.0
 bootstrap4==0.1.0
-
+catfish==1.4.4
 certifi==2019.3.9
 chardet==3.0.4
 command-not-found==0.3

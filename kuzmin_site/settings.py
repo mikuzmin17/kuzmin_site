@@ -26,7 +26,9 @@ SECRET_KEY = '*jde+*us2si!4)_vabm&z**0i(lu$(qtj#i$g*e##o%tu#f^fc'
 DEBUG = True
 
 ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['rocky-reaches-49258.herokuapp.com','127.0.0.1']
+# For example:
+# ALLOWED_HOSTS = ['fathomless-scrubland-30645.herokuapp.com','127.0.0.1']
 
 # Application definition
 

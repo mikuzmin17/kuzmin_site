@@ -14,13 +14,13 @@
 </ul>
 <p>
     {% if previous_day %}
-        Предыдущий день : <a href="http://127.0.0.1:8000/archive/{{ previous_day|date:'Y' }}/{{ previous_day|date:'m' }}/{{ previous_day|date:'d' }}"> <b>{{ previous_day|date:"j F Y" }}</b></a>
+        Предыдущий день : <a href="{% url 'blog:Post_day_numeric' previous_day|date:'Y' previous_day|date:'m'  previous_day|date:'d' %}"> <b>{{ previous_day|date:"j F Y" }}</b></a>
     {% endif %}
 
     {% if previous_day and next_day %} --- {% endif %}
 
     {% if next_day %}
-        Следующий день : <a href="http://127.0.0.1:8000/archive/{{ next_day|date:'Y' }}/{{ next_day|date:'m' }}/{{ next_day|date:'d' }}"> <b>{{ next_day|date:"j F Y" }}</b></a>
+        Следующий день : <a href="{% url 'blog:Post_day_numeric' next_day|date:'Y' next_day|date:'m'  next_day|date:'d' %}"> <b>{{ next_day|date:"j F Y" }}</b></a>
     {% endif %}
 </p>
 

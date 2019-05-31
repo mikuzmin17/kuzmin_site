@@ -25,10 +25,10 @@
 
 <p>
     {% if previous_month %}
-        Предыдущий месяц : <a href="http://127.0.0.1:8000/archive/{{ previous_month|date:'Y' }}/{{ previous_month|date:'m' }}"> <b>{{ previous_month|date:"F Y" }}</b></a>
+        Предыдущий месяц : <a href="{% url 'blog:month_numeric' previous_month|date:'Y'  previous_month|date:'m' %}"> <b>{{ previous_month|date:"F Y" }}</b></a>
     {% endif %}
     {% if next_month %}
-        Следующий месяц : <a href="http://127.0.0.1:8000/archive/{{ next_month|date:'Y' }}/{{ next_month|date:'m' }}"> <b>{{ next_month|date:"F Y" }}</b></a>
+        Следующий месяц : <a href="{% url 'blog:month_numeric' next_month|date:'Y'  next_month|date:'m' %}"> <b>{{ next_month|date:"F Y" }}</b></a>
     {% endif %}
 </p>
 

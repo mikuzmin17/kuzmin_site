@@ -24,7 +24,6 @@ class Privet(TemplateView):
         context = super(Privet, self).get_context_data(**kwargs)
         queryset = Post.objects.order_by('-datetime')[:10]
         context['list_home'] = [x for x in queryset]
-        context['obj'] = queryset[0]
         return context
 
 

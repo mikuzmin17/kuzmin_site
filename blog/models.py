@@ -25,7 +25,7 @@ class Post(models.Model):
 class Comment(models.Model):
     user_comment = models.ForeignKey(User, on_delete=models.CASCADE)
     post = models.ForeignKey(Post, on_delete=models.CASCADE, verbose_name=('коментируемая статья'))
-    parent = models.ForeignKey('self', default=0, blank=True, on_delete=models.DO_NOTHING)
+
 
     message = models.TextField(max_length=1500, default='')
     timestamp = models.DateTimeField(auto_now_add=True)

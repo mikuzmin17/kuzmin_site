@@ -50,6 +50,26 @@ class PostDetailView(DetailView):
         context['object'] = self.get_object()
         return context
 
+    def post(self, request, *args, **kwargs):
+        post = self.get_object()
+        form = CommentForm(request.POST or None, instance=post)
+        if form.is_valid():
+            new_comment = form.save(commit=False)
+            new_comment.message = form.cleaned_data['message']
+            new_comment.user_comment = request.user
+            new_comment.save()
+            Comment.objects.create(user_comment=new_comment.user_comment,
+                                   message=new_comment.message,
+                                   post=post
+                                   )
+            return HttpResponseRedirect(request.path_info)
+        else:
+            form = CommentForm()
+        context = {
+            'form': form
+        }
+        return render(self.request, self.template_name, context)
+
 
 class Post_YearArchiveView(YearArchiveView):
     model = Post

@@ -34,6 +34,9 @@ class Comment(models.Model):
     class Meta:
         ordering = ("-timestamp",)
 
+    def __str__(self):
+        return f"{self.user_comment} - {self.message[:30]}"
+
 
 class UserAccount(models.Model):
 

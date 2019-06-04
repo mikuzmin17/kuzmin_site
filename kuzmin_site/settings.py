@@ -23,7 +23,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '*jde+*us2si!4)_vabm&z**0i(lu$(qtj#i$g*e##o%tu#f^fc'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = []
 ALLOWED_HOSTS = ['calm-caverns-68590.herokuapp.com','127.0.0.1']

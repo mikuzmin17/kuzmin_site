@@ -49,7 +49,7 @@
             </ol>
         {% endif %}
 
-         {% if  user.is_superuser %}
+         {% if  user.is_staff %}
              <ul>
                         <a class="btn btn-sm btn-outline-secondary" href="{% url 'blog:create_post' %}">Запостить новую статью</a>
 
